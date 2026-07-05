@@ -1,0 +1,114 @@
+---
+---
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <span class="hero__eyebrow">Go &middot; Apache-2.0 &middot; in-memory key/value store</span>
+      <h1>A sharded, zero-copy store for your cluster's hot path.</h1>
+      <p class="hero__sub">
+        Tellstone is an ultra-high-performance, cloud-native in-memory
+        key/value store written entirely in Go. It speaks a compact binary
+        protocol and Redis-compatible RESP2, on top of a 256-way sharded
+        storage engine.
+      </p>
+
+      <div class="hero__install">
+        <span aria-hidden="true" class="tok-cmd">$</span>
+        <code>git clone https://github.com/Saxy/Tellstone && task build</code>
+        <button type="button" data-copy="git clone https://github.com/Saxy/Tellstone && task build" aria-label="Copy install command">
+          copy
+        </button>
+      </div>
+
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="/docs/getting-started/introduction/">Read the docs</a>
+        <a class="btn btn--ghost" href="https://github.com/Saxy/Tellstone">View on GitHub</a>
+      </div>
+    </div>
+
+    <div class="hero__illustration" aria-hidden="true">
+      <svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="coreGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="1.6" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- Outer facet + the six triangular facets, same mapping as the brand mark -->
+        <path d="M 50 10 L 85 30 L 85 70 L 50 90 L 15 70 L 15 30 Z" fill="var(--slate-800)"/>
+        <path d="M 50 50 L 15 30 L 50 10 Z" fill="var(--slate-600)" />
+        <path d="M 50 50 L 50 10 L 85 30 Z" fill="var(--slate-700)" />
+        <path d="M 50 50 L 85 30 L 85 70 Z" fill="var(--slate-800)" />
+        <path d="M 50 50 L 85 70 L 50 90 Z" fill="var(--slate-900)" />
+        <path d="M 50 50 L 50 90 L 15 70 Z" fill="var(--slate-800)" />
+        <path d="M 50 50 L 15 70 L 15 30 Z" fill="var(--slate-700)" />
+
+        <path d="M 50 20 L 75 35 L 75 65 L 50 80 L 25 65 L 25 35 Z" fill="none" stroke="var(--slate-600)" stroke-width="2" opacity="0.4"/>
+
+        <g stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" filter="url(#coreGlow)">
+          <line x1="50" y1="50" x2="50" y2="22" />
+          <line x1="50" y1="50" x2="50" y2="78" />
+          <line x1="50" y1="50" x2="22" y2="50" />
+          <line x1="50" y1="50" x2="78" y2="50" />
+          <line x1="50" y1="50" x2="30" y2="30" />
+          <line x1="50" y1="50" x2="70" y2="30" />
+          <line x1="50" y1="50" x2="70" y2="70" />
+          <line x1="50" y1="50" x2="30" y2="70" />
+          <line x1="50" y1="35" x2="65" y2="35" />
+          <line x1="50" y1="65" x2="35" y2="65" />
+          <line x1="35" y1="50" x2="35" y2="35" />
+          <line x1="65" y1="50" x2="65" y2="65" />
+        </g>
+
+        <g fill="var(--cyan)">
+          <circle class="node" style="animation-delay:0s" cx="50" cy="22" r="2" />
+          <circle class="node" style="animation-delay:0.5s" cx="50" cy="78" r="2" />
+          <circle class="node" style="animation-delay:1s" cx="30" cy="30" r="2" />
+          <circle class="node" style="animation-delay:1.5s" cx="70" cy="30" r="2" />
+          <circle class="node" style="animation-delay:2s" cx="70" cy="70" r="2" />
+          <circle class="node" style="animation-delay:2.5s" cx="30" cy="70" r="2" />
+          <circle cx="65" cy="35" r="1.5" />
+          <circle cx="35" cy="65" r="1.5" />
+        </g>
+
+        <circle cx="50" cy="50" r="9" fill="var(--slate-900)" stroke="var(--cyan)" stroke-width="2.5" filter="url(#coreGlow)" />
+        <circle class="core" cx="50" cy="50" r="4" fill="var(--cyan)" filter="url(#coreGlow)" />
+
+        <style>
+          .node, .core {
+            animation: pulse 3s ease-in-out infinite;
+            transform-origin: center;
+            transform-box: fill-box;
+          }
+          @keyframes pulse {
+            0%, 100% { opacity: 0.55; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .node, .core { animation: none; }
+          }
+        </style>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  document.querySelectorAll('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const text = btn.getAttribute('data-copy') ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = 'copied';
+        setTimeout(() => (btn.textContent = original), 1400);
+      } catch {
+        /* clipboard unavailable — no-op */
+      }
+    });
+  });
+</script>

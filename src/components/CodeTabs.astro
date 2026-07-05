@@ -1,0 +1,50 @@
+---
+interface Tab {
+  label: string;
+  code: string;
+}
+
+interface Props {
+  id: string;
+  tabs: Tab[];
+}
+
+const { id, tabs } = Astro.props;
+---
+<div class="codepanel" data-codepanel={id}>
+  <div class="codepanel__tabs" role="tablist">
+    {tabs.map((t, i) => (
+      <button
+        class="codepanel__tab"
+        role="tab"
+        aria-selected={i === 0 ? 'true' : 'false'}
+        data-tab-index={i}
+      >
+        {t.label}
+      </button>
+    ))}
+  </div>
+  <div class="codepanel__body">
+    {tabs.map((t, i) => (
+      <pre class="codepanel__pane" data-pane-index={i} data-active={i === 0 ? 'true' : 'false'}><code set:html={t.code} /></pre>
+    ))}
+  </div>
+</div>
+
+<script is:inline define:vars={{ id }}>
+  (function () {
+    const root = document.querySelector(`[data-codepanel="${id}"]`);
+    if (!root) return;
+    const tabs = root.querySelectorAll('.codepanel__tab');
+    const panes = root.querySelectorAll('.codepanel__pane');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const idx = tab.getAttribute('data-tab-index');
+        tabs.forEach((t) => t.setAttribute('aria-selected', 'false'));
+        panes.forEach((p) => p.setAttribute('data-active', 'false'));
+        tab.setAttribute('aria-selected', 'true');
+        root.querySelector(`[data-pane-index="${idx}"]`)?.setAttribute('data-active', 'true');
+      });
+    });
+  })();
+</script>

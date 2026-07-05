@@ -1,0 +1,108 @@
+---
+import Landing from '../layouts/Landing.astro';
+import Hero from '../components/Hero.astro';
+import StatBar from '../components/StatBar.astro';
+import Features from '../components/Features.astro';
+import CodeTabs from '../components/CodeTabs.astro';
+import CTASection from '../components/CTASection.astro';
+
+const commandTabs = [
+  {
+    label: 'RESP (redis-cli)',
+    code:
+      '<span class="tok-com"># task run:resp</span>\n' +
+      '<span class="tok-cmd">redis-cli</span> -p 6379 PING\n' +
+      '<span class="tok-com">-> PONG</span>\n' +
+      '<span class="tok-cmd">redis-cli</span> -p 6379 SET k v <span class="tok-key">EX</span> 60\n' +
+      '<span class="tok-com">-> OK</span>\n' +
+      '<span class="tok-cmd">redis-cli</span> -p 6379 GET k\n' +
+      '<span class="tok-com">-> "v"</span>',
+  },
+  {
+    label: 'Native Go client',
+    code:
+      '<span class="tok-cmd">import</span> <span class="tok-str">"github.com/Saxy/Tellstone/internal/network"</span>\n\n' +
+      'c, _ := network.Dial(<span class="tok-str">"127.0.0.1:9988"</span>, 2*time.Second)\n' +
+      'defer c.Close()\n\n' +
+      'scratch := make([]byte, 4096)\n' +
+      'c.Set([]byte(<span class="tok-str">"hello"</span>), []byte(<span class="tok-str">"world"</span>), 0, scratch)\n' +
+      'val, _ := c.Get([]byte(<span class="tok-str">"hello"</span>), scratch)',
+  },
+];
+
+const installTabs = [
+  {
+    label: 'Build',
+    code:
+      '<span class="tok-cmd">git</span> clone https://github.com/Saxy/Tellstone\n' +
+      '<span class="tok-cmd">cd</span> Tellstone\n' +
+      '<span class="tok-cmd">task</span> build   <span class="tok-com"># -> ./bin/tellstone</span>',
+  },
+  {
+    label: 'Run (binary only)',
+    code: '<span class="tok-cmd">task</span> run   <span class="tok-com"># 127.0.0.1:9988</span>',
+  },
+  {
+    label: 'Run (+ RESP)',
+    code: '<span class="tok-cmd">task</span> run:resp   <span class="tok-com"># :9988 and :6379</span>',
+  },
+];
+---
+<Landing
+  title="Tellstone — an in-memory database"
+  description="Tellstone is an open-source, in-memory key/value store written in Go, with a zero-copy binary protocol and an optional Redis-compatible RESP2 listener."
+>
+  <header class="nav">
+    <div class="wrap nav__row">
+      <a class="nav__brand" href="/">
+        <img src="/logo.svg" alt="" />
+        Tellstone
+      </a>
+      <nav class="nav__links">
+        <a href="/docs/getting-started/introduction/">Docs</a>
+        <a href="/#features">Features</a>
+        <a href="https://github.com/Saxy/Tellstone">GitHub</a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme">theme</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <Hero />
+    <StatBar />
+    <Features />
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section__head">
+          <h2>Talk to it however you like</h2>
+          <p>Use the zero-copy native protocol for the fastest path, or the Redis-compatible RESP2 listener with tools you already have.</p>
+        </div>
+        <CodeTabs id="commands" tabs={commandTabs} />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section__head">
+          <h2>Building from source</h2>
+          <p>Tellstone is Go, built with <a href="https://taskfile.dev">Task</a>. No published binaries yet — clone and build.</p>
+        </div>
+        <CodeTabs id="install" tabs={installTabs} />
+      </div>
+    </section>
+
+    <CTASection />
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__row">
+      <span>&copy; {new Date().getFullYear()} The Tellstone Project. Apache-2.0 License.</span>
+      <div class="footer__links">
+        <a href="/docs/getting-started/introduction/">Docs</a>
+        <a href="https://github.com/Saxy/Tellstone">GitHub</a>
+        <a href="https://github.com/Saxy/tellstone-website">This site's source</a>
+      </div>
+    </div>
+  </footer>
+</Landing>

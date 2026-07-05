@@ -1,0 +1,65 @@
+/*
+  Re-skins Starlight's built-in CSS variables with Tellstone's tokens.
+  Reference: https://starlight.astro.build/guides/css-and-tailwind/#theming
+  Keep this file thin -- it should only ever assign var(--tellstone-token),
+  never introduce new raw colors. Change the palette in tokens.css.
+*/
+
+:root {
+  --sl-font: var(--font-body);
+  --sl-font-mono: var(--font-mono);
+
+  --sl-color-accent-low: #cffafe;
+  --sl-color-accent: var(--color-accent);
+  --sl-color-accent-high: #0e7490;
+
+  --sl-color-white: var(--slate-900);
+  --sl-color-black: #ffffff;
+
+  --sl-color-gray-1: var(--slate-800);
+  --sl-color-gray-2: var(--slate-700);
+  --sl-color-gray-3: var(--slate-600);
+  --sl-color-gray-4: var(--slate-400);
+  --sl-color-gray-5: var(--slate-300);
+  --sl-color-gray-6: var(--slate-200);
+  --sl-color-gray-7: var(--slate-50);
+
+  --sl-color-bg: var(--slate-50);
+  --sl-color-bg-nav: #ffffff;
+  --sl-color-bg-sidebar: #ffffff;
+  --sl-color-bg-inline-code: var(--slate-100);
+  --sl-color-hairline: var(--slate-200);
+  --sl-color-hairline-shade: var(--slate-200);
+  --sl-color-hairline-light: var(--slate-200);
+}
+
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #164e63;
+  --sl-color-accent: var(--cyan);
+  --sl-color-accent-high: var(--cyan-300);
+
+  --sl-color-white: var(--slate-200);
+  --sl-color-black: var(--slate-900);
+
+  --sl-color-gray-1: var(--slate-200);
+  --sl-color-gray-2: var(--slate-300);
+  --sl-color-gray-3: var(--slate-400);
+  --sl-color-gray-4: var(--slate-600);
+  --sl-color-gray-5: var(--slate-700);
+  --sl-color-gray-6: var(--slate-800);
+  --sl-color-gray-7: var(--slate-900);
+
+  --sl-color-bg: var(--slate-900);
+  --sl-color-bg-nav: var(--slate-900);
+  --sl-color-bg-sidebar: var(--slate-900);
+  --sl-color-bg-inline-code: var(--slate-800);
+  --sl-color-hairline: var(--slate-700);
+  --sl-color-hairline-shade: var(--slate-700);
+  --sl-color-hairline-light: var(--slate-700);
+}
+
+/* A quiet nod to the brand mark: a thin cyan underline on h1s in docs. */
+.sl-markdown-content h1 {
+  border-bottom: 2px solid var(--sl-color-accent-low);
+  padding-bottom: 0.4rem;
+}

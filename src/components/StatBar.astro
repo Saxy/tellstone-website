@@ -1,0 +1,20 @@
+---
+// Structural facts only — no throughput/latency numbers here. Those are
+// environment-specific and shouldn't be advertised without a controlled,
+// reproducible benchmark on target hardware (see the docs' benchmarking page).
+const stats = [
+  { value: '256', label: 'sharded buckets, per-shard RWMutex' },
+  { value: '2', label: 'wire protocols: zero-copy binary + RESP2' },
+  { value: 'O(1)', label: 'TTL eviction via timing wheel' },
+];
+---
+<section class="stats">
+  <div class="wrap stats__row">
+    {stats.map((s) => (
+      <div class="stat">
+        <div class="stat__value">{s.value}</div>
+        <div class="stat__label">{s.label}</div>
+      </div>
+    ))}
+  </div>
+</section>

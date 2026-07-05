@@ -1,0 +1,32 @@
+---
+title: Tellstone Documentation
+description: An ultra-high-performance, cloud-native in-memory key/value store written in Go.
+template: splash
+hero:
+  tagline: A sharded, zero-copy in-memory key/value store for your cluster's hot path — speaking a native binary protocol and Redis-compatible RESP2.
+  actions:
+    - text: Get Started
+      link: /docs/getting-started/introduction/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/Saxy/Tellstone
+      icon: external
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+	<Card title="Getting Started" icon="rocket">
+		Build Tellstone from source and run your first commands in under five minutes.
+	</Card>
+	<Card title="Concepts" icon="puzzle">
+		How the sharded storage engine, protocols, and TTL eviction fit together.
+	</Card>
+	<Card title="Commands" icon="seti:config">
+		What's supported on RESP2 and the native binary protocol today.
+	</Card>
+	<Card title="Operations" icon="setting">
+		Configuration, observability, and current clustering status.
+	</Card>
+</CardGrid>

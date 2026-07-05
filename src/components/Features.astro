@@ -1,0 +1,46 @@
+---
+const features = [
+  {
+    title: 'Two protocols, one engine',
+    body: 'A zero-copy binary protocol for the fastest path, plus an optional Redis-compatible RESP2 listener so redis-cli and existing Redis clients work unmodified.',
+  },
+  {
+    title: 'Sharded, low-contention storage',
+    body: '256 buckets indexed by key hash, each guarded by its own RWMutex, for near-linear scaling across CPU cores.',
+  },
+  {
+    title: 'TTL eviction via timing wheel',
+    body: 'An active chronometer evicts expired keys in O(1); lazy eviction on read backs it up so nothing lingers.',
+  },
+  {
+    title: 'Optional at-rest encryption',
+    body: 'ChaCha20-Poly1305 encryption is available and off by default, so you pay for it only when you need it.',
+  },
+];
+---
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section__head">
+      <h2>Built for the hot path</h2>
+      <p>
+        Tellstone aims to be the in-cluster accelerator for cloud-native
+        applications — reducing latency and off-loading traffic from the
+        databases behind it.
+      </p>
+    </div>
+
+    <div class="features__grid">
+      {features.map((f) => (
+        <div class="feature">
+          <div class="feature__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M4 12 L10 12 L12 6 L15 18 L17 12 L20 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>{f.title}</h3>
+          <p>{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
