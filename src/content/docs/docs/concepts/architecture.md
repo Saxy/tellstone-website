@@ -11,7 +11,7 @@ Tellstone is organized into a small set of packages, each with one job:
 |---|---|---|
 | Binary protocol | `internal/network` | `MsgRequest`/`MsgResponse` frames (`GET`/`SET`/`DEL`, TTL, key, value) |
 | RESP2 protocol | `internal/resp` | Redis-compatible listener reusing the same engine |
-| Storage engine | `internal/storage` | 256 sharded buckets, per-shard `RWMutex`, timing-wheel eviction |
+| Storage engine | `internal/storage` | `GOMAXPROCS` sharded buckets (`--shards`), per-shard `RWMutex`, timing-wheel eviction |
 | Crypto | `internal/crypto` | Optional ChaCha20-Poly1305 for at-rest encryption |
 | Metrics / tracing | `internal/metrics`, `internal/trace` | Prometheus text exporter, OTLP/gRPC tracing for observability |
 
@@ -25,8 +25,8 @@ across protocols while maximizing performance.
 
 ## Sharded, low-contention storage
 
-The keyspace is split across 256 buckets by key hash. Each bucket has its
-own `RWMutex`, so operations against different buckets proceed without
+The keyspace is split across `N` shards (default `GOMAXPROCS`, configurable via `--num-shards`) by key hash. Each shard has its
+own `RWMutex`, so operations against different shards proceed without
 contending on a single global lock — this is what lets throughput scale
 close to linearly as you add cores. The sharded design minimizes lock
 contention and maximizes parallelism.

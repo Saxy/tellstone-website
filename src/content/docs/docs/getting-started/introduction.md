@@ -19,7 +19,7 @@ eviction and at-rest encryption.
 |                                               |
 |     +---------------------------------+       |
 |     |        TELLSTONE CORE           |       |
-|     |  (256 Sharded In-Memory Buckets)|       |
+|     |  (N Sharded In-Memory Buckets — GOMAXPROCS by default)|       |
 |     +---------------------------------+       |
 +---------------------------------------------+
 ```
@@ -35,7 +35,7 @@ in front of them:
 - **Redis-compatible** — an optional RESP2 listener lets you drive
   Tellstone with `redis-cli`, `redis-benchmark`, `memtier_benchmark`, and
   existing Redis client libraries for seamless integration.
-- **Sharded, low-contention engine** — 256 buckets indexed by key hash,
+- **Sharded, low-contention engine** — `N` shards (default `GOMAXPROCS`, configurable) indexed by key hash,
   each guarded by its own `RWMutex`, for near-linear scaling across cores.
 - **Configurable TTL eviction** — an active timing wheel evicts expired
   keys in O(1); lazy eviction on read backs it up for efficient key management.

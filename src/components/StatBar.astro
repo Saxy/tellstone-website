@@ -2,7 +2,8 @@
 const stats = [
   { value: 'Zero-Copy', label: 'binary protocol avoids text parsing and Protobuf overhead' },
   { value: 'Redis-Compatible', label: 'RESP2 listener works with redis-cli, memtier, and existing clients' },
-  { value: 'Shared Nothing', label: 'low-contention per-shard for near-linear scaling across cores' },
+  { value: '4.7x Redis', label: 'throughput vs Redis 8.8 in pinned benchmarks (same hardware)' },
+  { value: 'Shared Nothing', label: 'GOMAXPROCS shards with per-shard RWMutex for near-linear scaling' },
 ];
 ---
 <section class="stats">

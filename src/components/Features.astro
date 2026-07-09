@@ -2,19 +2,27 @@
 const features = [
   {
     title: 'High-Performance Protocols',
-    body: 'Zero-copy binary protocol for maximum throughput, plus Redis-compatible RESP2 for seamless integration with existing Redis tools and clients.',
+    body: 'Zero-copy binary protocol for maximum throughput, plus Redis-compatible RESP2 for seamless integration with existing Redis tools and clients. Supports GET/SET/DEL/PING today.',
   },
   {
-    title: 'Scalable Architecture',
-    body: 'Shared-nothing architecture with per-shard RWMutex for near-linear scaling across CPU cores and low-contention operations.',
+    title: 'Sharded, Lock-Free Engine',
+    body: 'N shards (default GOMAXPROCS, configurable) each with its own goroutine and RWMutex. FNV-1a hash routing, no cross-shard coordination — near-linear scaling as you add cores.',
+  },
+  {
+    title: 'Zero-GC Hot Path',
+    body: 'GC is disabled by default (TSD_GC_PERCENT=-1). Zero-allocation code paths with reusable scratch buffers mean zero stop-the-world pauses during normal operation.',
+  },
+  {
+    title: 'ChaCha20-Poly1305 Encryption',
+    body: 'Optional at-rest encryption via ChaCha20-Poly1305 AEAD. Zero-allocation encrypt/decrypt on the hot path. Off by default — no overhead when not in use.',
   },
   {
     title: 'Efficient TTL Management',
-    body: 'O(1) TTL eviction via timing wheel with lazy eviction on read, ensuring expired keys are removed efficiently without impacting performance.',
+    body: 'O(1) TTL eviction via a timing-wheel (chronometer) with per-slot locking, plus lazy eviction on read. Expired keys are never returned, even between active sweep ticks.',
   },
   {
-    title: 'Cloud-Native Design',
-    body: 'Built for modern cloud environments with configurable memory limits, metrics collection, and observability through Prometheus and OpenTelemetry.',
+    title: 'Cloud-Native Observability',
+    body: 'Prometheus metrics exporter per shard, OpenTelemetry tracing with configurable sample ratio, pprof profiling on demand. Built for Kubernetes from day one.',
   },
 ];
 ---

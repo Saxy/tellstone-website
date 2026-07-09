@@ -76,6 +76,6 @@ function coreL(c) { return startX + c * (coreW + gap); }
   </svg>
 
   <div class="core-caption">
-    <p><strong>No shared state.</strong> Each core owns its thread and data shard independently. Zero mutex contention, zero cross-core coordination — linear scaling with every core you add.</p>
+    <p><strong>No shared state.</strong> Each shard runs its own goroutine with an independent map and RWMutex. FNV-1a hashing pins every key to exactly one shard — zero cross-shard coordination, linear scaling with every core you add.</p>
   </div>
 </div>

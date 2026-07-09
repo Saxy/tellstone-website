@@ -53,7 +53,7 @@ application-level:
 
 The current architecture is designed with future distributed features in mind:
 
-- The sharded storage engine with 256 buckets provides a foundation for
+- The sharded storage engine with `GOMAXPROCS` shards provides a foundation for
   distributed sharding.
 - The protocol design allows for extension to support distributed operations.
 - The metrics and tracing infrastructure will support monitoring across

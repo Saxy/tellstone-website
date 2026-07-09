@@ -51,7 +51,7 @@ const installTabs = [
 ---
 <Landing
   title="Tellstone — High-Performance In-Memory Database"
-  description="Tellstone is an open-source, cloud-native in-memory key/value store written in Go, designed for high-throughput applications with zero-copy binary protocol and Redis-compatible RESP2 support."
+  description="Tellstone is an open-source, cloud-native in-memory database written in Go — a RESP2-compatible alternative to Redis with zero-copy binary protocol, shared-nothing architecture, optional ChaCha20-Poly1305 encryption, and a zero-GC hot path."
 >
   <header class="nav">
     <div class="wrap nav__row">
@@ -74,8 +74,8 @@ const installTabs = [
     <section class="section">
       <div class="wrap">
         <div class="section__head">
-          <h2>Thread-Per-Core, Not One-Size-Fits-All</h2>
-          <p>Every core gets its own thread and data shard — no locks, no contention, just parallel execution.</p>
+          <h2>One Goroutine Per Shard, Not One-Size-Fits-All</h2>
+          <p>Every shard runs its own goroutine with an independent lock-free map — no contention, no cross-shard coordination, just parallel execution.</p>
         </div>
         <SharedNothingAnimation />
       </div>
