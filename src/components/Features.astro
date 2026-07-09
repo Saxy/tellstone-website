@@ -12,18 +12,6 @@ const features = [
     title: 'Zero-GC Hot Path',
     body: 'GC is disabled by default (TSD_GC_PERCENT=-1). Zero-allocation code paths with reusable scratch buffers mean zero stop-the-world pauses during normal operation.',
   },
-  {
-    title: 'ChaCha20-Poly1305 Encryption',
-    body: 'Optional at-rest encryption via ChaCha20-Poly1305 AEAD. Zero-allocation encrypt/decrypt on the hot path. Off by default — no overhead when not in use.',
-  },
-  {
-    title: 'Efficient TTL Management',
-    body: 'O(1) TTL eviction via a timing-wheel (chronometer) with per-slot locking, plus lazy eviction on read. Expired keys are never returned, even between active sweep ticks.',
-  },
-  {
-    title: 'Cloud-Native Observability',
-    body: 'Prometheus metrics exporter per shard, OpenTelemetry tracing with configurable sample ratio, pprof profiling on demand. Built for Kubernetes from day one.',
-  },
 ];
 ---
 <section class="section" id="features">

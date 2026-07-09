@@ -21,6 +21,9 @@ export default defineConfig({
       editLink: {
         baseUrl: 'https://github.com/Saxy/tellstone-website/edit/main/',
       },
+      components: {
+        ThemeSelect: './src/components/DisabledThemeSelect.astro',
+      },
       customCss: [
         './src/styles/tokens.css',
         './src/styles/starlight-overrides.css',
