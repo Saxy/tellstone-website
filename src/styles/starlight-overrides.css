@@ -62,4 +62,66 @@
 .sl-markdown-content h1 {
   border-bottom: 2px solid var(--sl-color-accent-low);
   padding-bottom: 0.4rem;
+  transition: border-color 0.15s ease;
+}
+
+.sl-markdown-content h1:hover {
+  border-color: var(--sl-color-accent);
+}
+
+/* Enhance code blocks with better contrast in dark mode */
+.sl-markdown-content pre {
+  background: var(--sl-color-bg-inline-code);
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+/* Improve table styling */
+.sl-markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.sl-markdown-content th,
+.sl-markdown-content td {
+  border: 1px solid var(--sl-color-hairline);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.sl-markdown-content th {
+  background: var(--sl-color-bg-nav);
+  font-weight: 600;
+}
+
+/* Add subtle animations to improve user experience */
+.sl-markdown-content a {
+  transition: color 0.15s ease, border-bottom 0.15s ease;
+}
+
+.sl-markdown-content a:hover {
+  color: var(--sl-color-accent);
+  border-bottom: 1px solid var(--sl-color-accent);
+}
+
+/* Improve blockquote styling */
+.sl-markdown-content blockquote {
+  border-left: 4px solid var(--sl-color-accent);
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background: color-mix(in srgb, var(--sl-color-accent) 5%, var(--sl-color-bg));
+  border-radius: var(--radius-sm);
+}
+
+/* Add subtle hover effects to cards */
+.sl-card {
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.sl-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
 }

@@ -1,31 +1,34 @@
 ---
 const features = [
   {
-    title: 'Two protocols, one engine',
-    body: 'A zero-copy binary protocol for the fastest path, plus an optional Redis-compatible RESP2 listener so redis-cli and existing Redis clients work unmodified.',
+    title: 'High-Performance Protocols',
+    body: 'Zero-copy binary protocol for maximum throughput, plus Redis-compatible RESP2 for seamless integration with existing Redis tools and clients.',
   },
   {
-    title: 'Sharded, low-contention storage',
-    body: '256 buckets indexed by key hash, each guarded by its own RWMutex, for near-linear scaling across CPU cores.',
+    title: 'Scalable Architecture',
+    body: 'Shared-nothing architecture with per-shard RWMutex for near-linear scaling across CPU cores and low-contention operations.',
   },
   {
-    title: 'TTL eviction via timing wheel',
-    body: 'An active chronometer evicts expired keys in O(1); lazy eviction on read backs it up so nothing lingers.',
+    title: 'Efficient TTL Management',
+    body: 'O(1) TTL eviction via timing wheel with lazy eviction on read, ensuring expired keys are removed efficiently without impacting performance.',
   },
   {
-    title: 'Optional at-rest encryption',
-    body: 'ChaCha20-Poly1305 encryption is available and off by default, so you pay for it only when you need it.',
+    title: 'Security Options',
+    body: 'Optional ChaCha20-Poly1305 at-rest encryption for sensitive data, available when needed without impacting performance for unencrypted use cases.',
+  },
+  {
+    title: 'Cloud-Native Design',
+    body: 'Built for modern cloud environments with configurable memory limits, metrics collection, and observability through Prometheus and OpenTelemetry.',
   },
 ];
 ---
 <section class="section" id="features">
   <div class="wrap">
     <div class="section__head">
-      <h2>Built for the hot path</h2>
+      <h2>Designed for Modern Applications</h2>
       <p>
-        Tellstone aims to be the in-cluster accelerator for cloud-native
-        applications — reducing latency and off-loading traffic from the
-        databases behind it.
+        Tellstone is built to accelerate cloud-native applications by providing
+        high-performance in-memory storage with flexible deployment options.
       </p>
     </div>
 

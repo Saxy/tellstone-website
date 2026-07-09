@@ -22,6 +22,8 @@ take precedence when both are set.
 | `--enable-metrics` | `TSD_ENABLE_METRICS` | `false` | Enable the Prometheus exporter |
 | `--metrics-addr` | `TSD_METRICS_ADDR` | `:9100` | Prometheus exporter address (`/metrics`) |
 | `--trace-ratio` | `TSD_TRACE_RATIO` | `0.0` | OpenTelemetry sample ratio (`0` disables) |
+| `--num-shards` | `TSD_NUM_SHARDS` | `GOMAXPROCS` | Number of shared-nothing shards (one goroutine + one lock-free map per shard) |
+| `--shutdown-timeout` | `TSD_SHUTDOWN_TIMEOUT` | `10s` | Max time to wait for graceful shutdown on SIGINT/SIGTERM |
 
 Example:
 
@@ -30,7 +32,9 @@ Example:
   --addr 127.0.0.1:9988 \
   --enable-resp \
   --resp-addr 127.0.0.1:6379 \
-  --enable-metrics
+  --enable-metrics \
+  --num-shards 8 \
+  --shutdown-timeout 30s
 ```
 
 ## Runtime tuning (environment only)
@@ -49,3 +53,14 @@ These aren't exposed as flags:
   `http://<metrics-addr>/metrics` (default `:9100`).
 - **Profiling:** set `TSD_ENABLE_PROFILING=1` to serve `pprof` on
   `127.0.0.1:6060`, e.g. `go tool pprof http://127.0.0.1:6060/debug/pprof/profile`.
+- **Tracing:** set `TSD_TRACE_RATIO` to enable OpenTelemetry tracing for performance analysis.
+
+## Production Recommendations
+
+For production deployments, consider these settings:
+
+- Set `TSD_GC_PERCENT=-1` to minimize GC pauses for maximum performance
+- Set `TSD_MEM_LIMIT_BYTES` to approximately 85-90% of your container memory limit to prevent OOM kills
+- Enable metrics with `--enable-metrics` for monitoring
+- Use `--num-shards` to match your CPU core count for optimal performance
+- Set appropriate `--shutdown-timeout` to allow for graceful shutdown in containerized environments

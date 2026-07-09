@@ -53,3 +53,5 @@ A runnable example lives in `cmd/example/client` in the main repo.
   TTLs are represented today.
 - Check [Configuration](/docs/operations/configuration/) for tuning memory
   limits and eviction.
+- Explore [Architecture](/docs/concepts/architecture/) to understand how the protocols
+  and storage engine fit together.

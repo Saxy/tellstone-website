@@ -17,7 +17,7 @@ Starlight's sidebar `autogenerate` will pick new pages up automatically.
 |---|---|
 | `PING` | Health check. Replies `PONG`. |
 | `GET key` | Retrieve a value, or a nil reply if the key doesn't exist or has expired. |
-| `SET key value [EX seconds \| PX milliseconds]` | Set a value, optionally with a TTL. |
+| `SET key value [EX seconds \| PX milliseconds]` | Set a value, optionally with a TTL. Returns `OK` on success. |
 | `DEL key` | Delete a key. Replies with the number of keys removed (`0` or `1`). |
 
 Unknown or unimplemented commands return a `-ERR` reply without dropping
@@ -37,6 +37,12 @@ client in `internal/network`, rather than as a text command line:
 
 See [Architecture](/docs/concepts/architecture/) for how `internal/network`
 and `internal/resp` share the same underlying storage engine.
+
+## Performance Considerations
+
+- All commands are designed for maximum performance with zero-copy operations where possible.
+- The binary protocol is the fastest path for applications that can integrate directly with Go.
+- RESP2 provides compatibility with existing Redis tools and client libraries.
 
 ## On the roadmap (Phase 2)
 

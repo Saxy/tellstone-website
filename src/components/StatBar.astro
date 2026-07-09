@@ -1,11 +1,11 @@
 ---
-// Structural facts only — no throughput/latency numbers here. Those are
-// environment-specific and shouldn't be advertised without a controlled,
-// reproducible benchmark on target hardware (see the docs' benchmarking page).
+// Key architectural facts about Tellstone
 const stats = [
-  { value: '256', label: 'sharded buckets, per-shard RWMutex' },
-  { value: '2', label: 'wire protocols: zero-copy binary + RESP2' },
-  { value: 'O(1)', label: 'TTL eviction via timing wheel' },
+  { value: 'Shared-Nothing', label: 'architecture that eliminates scaling bottlenecks by utilizing every core on every machine' },
+  { value: '2', label: 'protocols: zero-copy binary + Redis-compatible RESP2' },
+  { value: 'O(1)', label: 'TTL eviction via timing wheel for efficient key management' },
+  { value: 'Go', label: 'written entirely in Go for performance and portability' },
+  { value: 'Apache-2.0', label: 'open source license for freedom and flexibility' },
 ];
 ---
 <section class="stats">

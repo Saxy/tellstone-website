@@ -25,6 +25,8 @@
   --cyan: #00e5ff;      /* exact accent from the logo -- dark-mode primary */
   --cyan-600: #0891b2;  /* accessible variant for light backgrounds */
   --cyan-300: #67e8f9;  /* bright variant for high-contrast text on dark */
+  --cyan-500: #00d1ff;  /* primary accent for buttons and highlights */
+  --cyan-700: #066f8f;  /* darker variant for borders and subtle accents */
 
   /* Semantic (light mode default) */
   --color-bg: var(--slate-50);
@@ -34,6 +36,8 @@
   --color-border: var(--slate-200);
   --color-accent: var(--cyan-600);
   --color-accent-contrast: #ffffff;
+  --color-accent-hover: var(--cyan-500);
+  --color-accent-active: var(--cyan-700);
 
   /* Type */
   --font-display: 'Space Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
@@ -56,6 +60,8 @@
   --color-border: var(--slate-700);
   --color-accent: var(--cyan);
   --color-accent-contrast: var(--slate-900);
+  --color-accent-hover: var(--cyan-500);
+  --color-accent-active: var(--cyan-700);
   --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.35);
   --shadow-strong: 0 16px 48px rgba(0, 0, 0, 0.5);
 }

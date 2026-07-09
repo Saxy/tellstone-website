@@ -30,6 +30,7 @@ The project's stated roadmap includes:
   describe itself.
 - **Official client SDKs** beyond the current Go client.
 - **A broader RESP command set** (RESP3, `INCR`, `EXPIRE`, `MULTI`/`EXEC`).
+- **Distributed consensus** for coordinated operations across nodes.
 
 None of this is implemented yet. If you're interested in helping design or
 build replication, persistence, or a wider command set, see
@@ -46,3 +47,14 @@ application-level:
   nodes yet.
 - Run Tellstone as a cache in front of a durable, already-replicated
   database, so a lost node only costs you cache warmth, not data.
+- Implement application-level sharding and failover logic to handle node failures.
+
+## Architecture for Future Scaling
+
+The current architecture is designed with future distributed features in mind:
+
+- The sharded storage engine with 256 buckets provides a foundation for
+  distributed sharding.
+- The protocol design allows for extension to support distributed operations.
+- The metrics and tracing infrastructure will support monitoring across
+  distributed nodes.

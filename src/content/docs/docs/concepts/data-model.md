@@ -15,20 +15,21 @@ those are tracked as Phase 2 work (see
 Both the native binary protocol and the RESP2 listener work with the same
 underlying `(key, value, ttl)` triple:
 
-- **Key** — arbitrary bytes, typically a UTF-8 string in practice.
+- **Key** — arbitrary bytes, typically a UTF-8 string in practice. Keys can be up to 4096 bytes in length.
 - **Value** — arbitrary bytes. Tellstone doesn't interpret or validate the
   contents; encoding (JSON, msgpack, protobuf, plain text) is entirely up
-  to your application.
+to your application. Values can be up to the maximum message size limit (default 16MiB).
 - **TTL** — optional, set in milliseconds on the native protocol
   (`ttlMs=0` means no expiry) or via `EX seconds` / `PX milliseconds` on
-  RESP.
+  RESP. TTLs are implemented using a timing wheel for O(1) eviction.
 
 ## Expiry
 
 A key with a TTL is evicted by the timing wheel described in
 [Architecture](/docs/concepts/architecture/), and is also treated as
 absent by lazy eviction on read even if the active sweep hasn't reached it
-yet — so reads never observe a logically-expired value.
+yet — so reads never observe a logically-expired value. This ensures data
+consistency while maintaining high performance.
 
 ## If you need richer types today
 
@@ -40,8 +41,11 @@ patterns are:
 - Use key naming conventions (e.g. `queue:orders:123`) to emulate
   grouping, and read the full set of related keys back with your own
   application logic — there is no server-side `SCAN`/pattern-match yet.
+- Implement application-level data structures by combining multiple key/value pairs.
 
 ## Next: the command reference
 
 See the [command reference](/docs/commands/overview/) for the exact
-commands available on each protocol today.
+commands available on each protocol today. For more information on how to
+work with the data model, see [Architecture](/docs/concepts/architecture/) to understand how the protocols
+and storage engine fit together.

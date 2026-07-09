@@ -1,6 +1,7 @@
 ---
 import Landing from '../layouts/Landing.astro';
 import Hero from '../components/Hero.astro';
+import SharedNothingAnimation from '../components/SharedNothingAnimation.astro';
 import StatBar from '../components/StatBar.astro';
 import Features from '../components/Features.astro';
 import CodeTabs from '../components/CodeTabs.astro';
@@ -49,13 +50,13 @@ const installTabs = [
 ];
 ---
 <Landing
-  title="Tellstone — an in-memory database"
-  description="Tellstone is an open-source, in-memory key/value store written in Go, with a zero-copy binary protocol and an optional Redis-compatible RESP2 listener."
+  title="Tellstone — High-Performance In-Memory Database"
+  description="Tellstone is an open-source, cloud-native in-memory key/value store written in Go, designed for high-throughput applications with zero-copy binary protocol and Redis-compatible RESP2 support."
 >
   <header class="nav">
     <div class="wrap nav__row">
       <a class="nav__brand" href="/">
-        <img src="/logo.svg" alt="" />
+        <img src="/logo.svg" alt="Tellstone logo" />
         Tellstone
       </a>
       <nav class="nav__links">
@@ -70,13 +71,22 @@ const installTabs = [
   <main>
     <Hero />
     <StatBar />
+    <section class="section">
+      <div class="wrap">
+        <div class="section__head">
+          <h2>Thread-Per-Core, Not One-Size-Fits-All</h2>
+          <p>Every core gets its own thread and data shard — no locks, no contention, just parallel execution.</p>
+        </div>
+        <SharedNothingAnimation />
+      </div>
+    </section>
     <Features />
 
     <section class="section">
       <div class="wrap">
         <div class="section__head">
-          <h2>Talk to it however you like</h2>
-          <p>Use the zero-copy native protocol for the fastest path, or the Redis-compatible RESP2 listener with tools you already have.</p>
+          <h2>Flexible Protocol Support</h2>
+          <p>Choose the protocol that best fits your needs: ultra-fast zero-copy binary protocol for maximum performance, or Redis-compatible RESP2 for seamless integration with existing tools.</p>
         </div>
         <CodeTabs id="commands" tabs={commandTabs} />
       </div>
@@ -85,8 +95,8 @@ const installTabs = [
     <section class="section">
       <div class="wrap">
         <div class="section__head">
-          <h2>Building from source</h2>
-          <p>Tellstone is Go, built with <a href="https://taskfile.dev">Task</a>. No published binaries yet — clone and build.</p>
+          <h2>Easy Setup & Deployment</h2>
+          <p>Build Tellstone from source with Go and Task, or run it directly with configurable flags and environment variables.</p>
         </div>
         <CodeTabs id="install" tabs={installTabs} />
       </div>
@@ -99,9 +109,19 @@ const installTabs = [
     <div class="wrap footer__row">
       <span>&copy; {new Date().getFullYear()} The Tellstone Project. Apache-2.0 License.</span>
       <div class="footer__links">
-        <a href="/docs/getting-started/introduction/">Docs</a>
-        <a href="https://github.com/Saxy/Tellstone">GitHub</a>
-        <a href="https://github.com/Saxy/tellstone-website">This site's source</a>
+        <a href="/docs/getting-started/introduction/">Documentation</a>
+        <a href="https://github.com/Saxy/Tellstone" class="btn btn--ghost">
+          <img src="/github-icon.svg" alt="GitHub" width="18" height="18" />
+          GitHub
+        </a>
+        <a href="https://github.com/Saxy/tellstone-website" target="_blank" class="btn btn--ghost">
+          <img src="/github-icon.svg" alt="GitHub" width="18" height="18" />
+          Website Source
+        </a>
+        <a href="https://discord.gg/kEf78DUFX" target="_blank" class="btn btn--ghost">
+          <img src="/discord-icon.svg" alt="Discord" width="18" height="18" />
+          Join Discord
+        </a>
       </div>
     </div>
   </footer>

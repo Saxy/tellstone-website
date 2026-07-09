@@ -31,17 +31,18 @@ high-frequency workloads. Tellstone offers a lean, memory-efficient buffer
 in front of them:
 
 - **Zero-copy binary protocol** — direct binary messages avoid text
-  parsing or Protobuf overhead.
+  parsing or Protobuf overhead for maximum performance.
 - **Redis-compatible** — an optional RESP2 listener lets you drive
   Tellstone with `redis-cli`, `redis-benchmark`, `memtier_benchmark`, and
-  existing Redis client libraries.
+  existing Redis client libraries for seamless integration.
 - **Sharded, low-contention engine** — 256 buckets indexed by key hash,
   each guarded by its own `RWMutex`, for near-linear scaling across cores.
 - **Configurable TTL eviction** — an active timing wheel evicts expired
-  keys in O(1); lazy eviction on read backs it up.
-- **Optional at-rest encryption** — ChaCha20-Poly1305, off by default.
+  keys in O(1); lazy eviction on read backs it up for efficient key management.
+- **Optional at-rest encryption** — ChaCha20-Poly1305, off by default, for
+  secure data storage when needed.
 - **Metrics & tracing** — a built-in Prometheus exporter and optional
-  OpenTelemetry tracing.
+  OpenTelemetry tracing for comprehensive observability.
 
 ## What's here today vs. on the roadmap
 
@@ -67,3 +68,4 @@ and a broader RESP command set (RESP3, `INCR`, `EXPIRE`, `MULTI`/`EXEC`).
   and read your first key.
 - Read [Architecture](/docs/concepts/architecture/) for how the protocols
   and storage engine fit together.
+- Explore [Concepts](/docs/concepts/data-model/) to understand the data model and key/value structure.

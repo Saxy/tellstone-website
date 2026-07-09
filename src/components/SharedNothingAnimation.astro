@@ -1,0 +1,100 @@
+---
+const cores = [0, 1, 2, 3];
+const coreW = 135;
+const gap = 20;
+const startX = 20;
+const svgW = startX * 2 + cores.length * coreW + (cores.length - 1) * gap;
+const svgH = 240;
+
+function cx(c) { return startX + c * (coreW + gap) + coreW / 2; }
+function railL(c) { return startX + c * (coreW + gap) + 10; }
+function railR(c) { return railL(c) + coreW - 20; }
+function coreL(c) { return startX + c * (coreW + gap); }
+---
+<div class="core-architecture">
+  <svg class="core-svg" viewBox="0 0 {svgW} {svgH}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--slate-900, #0f172a)" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="var(--slate-900, #0f172a)" stop-opacity="0.6"/>
+      </linearGradient>
+    </defs>
+
+    <rect x="0" y="0" width={svgW} height={svgH} rx="12" fill="url(#bgGrad)"/>
+
+    {cores.map((c) => (
+      <>
+        <!-- Core die -->
+        <rect x={coreL(c)} y="50" width={coreW} height="100" rx="8"
+              fill="var(--slate-800, #1e293b)" stroke="var(--slate-700, #334155)" stroke-width="1.5">
+          <animate attributeName="stroke" values="var(--slate-700, #334155);var(--cyan, #06b6d4);var(--slate-700, #334155)"
+                   dur="3s" begin={c * 0.5 + 's'} repeatCount="indefinite"/>
+        </rect>
+
+        <!-- Core number -->
+        <text x={cx(c)} y="80" text-anchor="middle"
+              fill="var(--color-text-muted, #94a3b8)" font-size="10" font-family="JetBrains Mono, monospace">
+          Core {c}
+        </text>
+
+        <!-- Thread rail -->
+        <rect x={railL(c)} y="100" width={railR(c) - railL(c)} height="2" rx="1"
+              fill="var(--slate-700, #334155)"/>
+
+        <!-- Thread dot (main) -->
+        <circle r="4" fill="var(--cyan, #06b6d4)" opacity="0.9">
+          <animate attributeName="cx" values="{railL(c)};{railR(c)};{railL(c)}"
+                   dur={1.8 - c * 0.1 + 's'} begin={c * 0.3 + 's'} repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Thread dot (ghost/trail) -->
+        <circle r="2.5" fill="var(--cyan, #06b6d4)" opacity="0.35">
+          <animate attributeName="cx" values="{railL(c)};{railR(c)};{railL(c)}"
+                   dur={1.8 - c * 0.1 + 's'} begin={c * 0.3 + 0.15 + 's'} repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Processing indicator - data items -->
+        <rect x={railL(c) + 5} y="118" width="12" height="8" rx="2" fill="var(--accent-orange, #f59e0b)" opacity="0">
+          <animate attributeName="opacity" values="0;1;1;0" dur="2s" begin={c * 0.35 + 's'} repeatCount="indefinite"/>
+        </rect>
+        <rect x={railL(c) + 25} y="118" width="12" height="8" rx="2" fill="var(--accent-green, #10b981)" opacity="0">
+          <animate attributeName="opacity" values="0;0;1;1;0" dur="2s" begin={c * 0.35 + 0.5 + 's'} repeatCount="indefinite"/>
+        </rect>
+        <rect x={railL(c) + 45} y="118" width="12" height="8" rx="2" fill="var(--accent-blue, #3b82f6)" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;1;1;0" dur="2s" begin={c * 0.35 + 1.0 + 's'} repeatCount="indefinite"/>
+        </rect>
+        <rect x={railL(c) + 65} y="118" width="12" height="8" rx="2" fill="var(--accent-orange, #f59e0b)" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;0;1;1;0" dur="2s" begin={c * 0.35 + 1.5 + 's'} repeatCount="indefinite"/>
+        </rect>
+      </>
+    ))}
+
+    <!-- Data flow arrow -->
+    <line x1="0" y1="175" x2={svgW} y2="175" stroke="var(--slate-700, #334155)" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x={svgW / 2} y="190" text-anchor="middle"
+          fill="var(--color-text-muted, #94a3b8)" font-size="9" font-family="JetBrains Mono, monospace">
+      incoming requests → round-robin across cores
+    </text>
+
+    <!-- Packets flowing on the arrow -->
+    {cores.map((c) => (
+      <rect x="-8" y="170" width="6" height="6" rx="1" fill="var(--cyan, #06b6d4)" opacity="0.6">
+        <animate attributeName="x" values="-10;{svgW + 10}" dur="4s"
+                 begin={c * 0.8 + 's'} repeatCount="indefinite"/>
+      </rect>
+    ))}
+
+    <!-- Bottom labels -->
+    {cores.map((c) => (
+      <text x={cx(c)} y="218" text-anchor="middle"
+            fill="var(--cyan, #06b6d4)" font-size="8" font-family="JetBrains Mono, monospace" opacity="0.5">
+        independent
+        <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2s" begin={c * 0.5 + 's'} repeatCount="indefinite"/>
+      </text>
+    ))}
+  </svg>
+
+  <div class="core-caption">
+    <p><strong>No shared state.</strong> Each core owns its thread and data shard independently. Zero mutex contention, zero cross-core coordination — linear scaling with every core you add.</p>
+  </div>
+</div>
