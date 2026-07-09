@@ -1,11 +1,8 @@
 ---
-// Key architectural facts about Tellstone
 const stats = [
-  { value: 'Shared-Nothing', label: 'architecture that eliminates scaling bottlenecks by utilizing every core on every machine' },
-  { value: '2', label: 'protocols: zero-copy binary + Redis-compatible RESP2' },
-  { value: 'O(1)', label: 'TTL eviction via timing wheel for efficient key management' },
-  { value: 'Go', label: 'written entirely in Go for performance and portability' },
-  { value: 'Apache-2.0', label: 'open source license for freedom and flexibility' },
+  { value: 'Zero-Copy', label: 'binary protocol avoids text parsing and Protobuf overhead' },
+  { value: 'Redis-Compatible', label: 'RESP2 listener works with redis-cli, memtier, and existing clients' },
+  { value: 'Shared Nothing', label: 'low-contention per-shard for near-linear scaling across cores' },
 ];
 ---
 <section class="stats">

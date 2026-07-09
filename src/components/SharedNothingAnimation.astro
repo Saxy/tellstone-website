@@ -37,21 +37,12 @@ function coreL(c) { return startX + c * (coreW + gap); }
           Core {c}
         </text>
 
-        <!-- Thread rail -->
+        <!-- Thread rail with animated glow -->
         <rect x={railL(c)} y="100" width={railR(c) - railL(c)} height="2" rx="1"
-              fill="var(--slate-700, #334155)"/>
-
-        <!-- Thread dot (main) -->
-        <circle r="4" fill="var(--cyan, #06b6d4)" opacity="0.9">
-          <animate attributeName="cx" values="{railL(c)};{railR(c)};{railL(c)}"
-                   dur={1.8 - c * 0.1 + 's'} begin={c * 0.3 + 's'} repeatCount="indefinite"/>
-        </circle>
-
-        <!-- Thread dot (ghost/trail) -->
-        <circle r="2.5" fill="var(--cyan, #06b6d4)" opacity="0.35">
-          <animate attributeName="cx" values="{railL(c)};{railR(c)};{railL(c)}"
-                   dur={1.8 - c * 0.1 + 's'} begin={c * 0.3 + 0.15 + 's'} repeatCount="indefinite"/>
-        </circle>
+              fill="var(--slate-700, #334155)">
+          <animate attributeName="fill" values="var(--slate-700, #334155);var(--cyan, #06b6d4);var(--slate-700, #334155)"
+                   dur="2.5s" begin={c * 0.4 + 's'} repeatCount="indefinite"/>
+        </rect>
 
         <!-- Processing indicator - data items -->
         <rect x={railL(c) + 5} y="118" width="12" height="8" rx="2" fill="var(--accent-orange, #f59e0b)" opacity="0">
@@ -60,7 +51,7 @@ function coreL(c) { return startX + c * (coreW + gap); }
         <rect x={railL(c) + 25} y="118" width="12" height="8" rx="2" fill="var(--accent-green, #10b981)" opacity="0">
           <animate attributeName="opacity" values="0;0;1;1;0" dur="2s" begin={c * 0.35 + 0.5 + 's'} repeatCount="indefinite"/>
         </rect>
-        <rect x={railL(c) + 45} y="118" width="12" height="8" rx="2" fill="var(--accent-blue, #3b82f6)" opacity="0">
+        <rect x={railL(c) + 45} y="118" width="12" height="8" rx="2" fill="var(--cyan, #00e5ff)" opacity="0">
           <animate attributeName="opacity" values="0;0;0;1;1;0" dur="2s" begin={c * 0.35 + 1.0 + 's'} repeatCount="indefinite"/>
         </rect>
         <rect x={railL(c) + 65} y="118" width="12" height="8" rx="2" fill="var(--accent-orange, #f59e0b)" opacity="0">
@@ -77,21 +68,11 @@ function coreL(c) { return startX + c * (coreW + gap); }
     </text>
 
     <!-- Packets flowing on the arrow -->
-    {cores.map((c) => (
-      <rect x="-8" y="170" width="6" height="6" rx="1" fill="var(--cyan, #06b6d4)" opacity="0.6">
-        <animate attributeName="x" values="-10;{svgW + 10}" dur="4s"
-                 begin={c * 0.8 + 's'} repeatCount="indefinite"/>
-      </rect>
-    ))}
+    <rect x="-8" y="170" width="6" height="6" rx="1" fill="var(--cyan, #06b6d4)" opacity="0.4">
+      <animate attributeName="x" values="-10;{svgW + 10}" dur="3s" repeatCount="indefinite"/>
+    </rect>
 
-    <!-- Bottom labels -->
-    {cores.map((c) => (
-      <text x={cx(c)} y="218" text-anchor="middle"
-            fill="var(--cyan, #06b6d4)" font-size="8" font-family="JetBrains Mono, monospace" opacity="0.5">
-        independent
-        <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2s" begin={c * 0.5 + 's'} repeatCount="indefinite"/>
-      </text>
-    ))}
+
   </svg>
 
   <div class="core-caption">
