@@ -1,4 +1,6 @@
 ---
+import '../styles/codetabs.css';
+
 interface Tab {
   label: string;
   code: string;
@@ -18,8 +20,7 @@ const { id, tabs } = Astro.props;
         class="codepanel__tab"
         role="tab"
         aria-selected={i === 0 ? 'true' : 'false'}
-        data-tab-index={i}
-      >
+        data-tab-index={i} >
         {t.label}
       </button>
     ))}

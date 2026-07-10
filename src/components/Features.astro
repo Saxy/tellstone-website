@@ -1,4 +1,6 @@
 ---
+import '../styles/features.css';
+
 const features = [
   {
     title: 'High-Performance Protocols',
@@ -28,8 +30,8 @@ const features = [
       {features.map((f) => (
         <div class="feature">
           <div class="feature__icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M4 12 L10 12 L12 6 L15 18 L17 12 L20 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg class="heartbeat-svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path class="heartbeat-path" d="M4 12 L10 12 L12 6 L15 18 L17 12 L20 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <h3>{f.title}</h3>

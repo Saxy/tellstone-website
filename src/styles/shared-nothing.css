@@ -1,0 +1,26 @@
+/* ---------- Core Architecture Animation ---------- */
+
+.core-architecture {
+  margin-top: 0.75rem;
+}
+
+.core-svg {
+  width: 100%;
+  height: auto;
+  max-width: 700px;
+  display: block;
+}
+
+.core-caption {
+  margin-top: 1rem;
+  max-width: 560px;
+}
+
+.core-caption p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.core-caption strong {
+  color: var(--color-text);
+}

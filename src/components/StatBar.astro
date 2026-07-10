@@ -1,9 +1,10 @@
 ---
+import '../styles/statbar.css';
+
 const stats = [
+  { value: 'Shared Nothing', label: 'thread-per-core for near-linear scaling. Higher throughput on a smaller infra footprint.' },
   { value: 'Zero-Copy', label: 'binary protocol avoids text parsing and Protobuf overhead' },
-  { value: 'Redis-Compatible', label: 'RESP2 listener works with redis-cli, memtier, and existing clients' },
-  { value: '4.7x Redis', label: 'throughput vs Redis 8.8 in pinned benchmarks (same hardware)' },
-  { value: 'Shared Nothing', label: 'GOMAXPROCS shards with per-shard RWMutex for near-linear scaling' },
+  { value: 'Redis-Compatible', label: 'DropIn replacement for Redis which makes the migration less complex and increases performance directly.' },
 ];
 ---
 <section class="stats">

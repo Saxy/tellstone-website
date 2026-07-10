@@ -23,7 +23,7 @@ export default defineConfig({
       },
       components: {
         ThemeSelect: './src/components/DisabledThemeSelect.astro',
-      },
+      },  
       customCss: [
         './src/styles/tokens.css',
         './src/styles/starlight-overrides.css',
