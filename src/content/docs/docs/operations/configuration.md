@@ -22,6 +22,8 @@ take precedence when both are set.
 | `--enable-metrics` | `TSD_ENABLE_METRICS` | `false` | Enable the Prometheus exporter |
 | `--metrics-addr` | `TSD_METRICS_ADDR` | `:9100` | Prometheus exporter address (`/metrics`) |
 | `--trace-ratio` | `TSD_TRACE_RATIO` | `0.0` | OpenTelemetry sample ratio (`0` disables) |
+| `--enable-persistence` | `TSD_ENABLE_PERSISTENCE` | `false` | Enable per-shard WAL for crash recovery |
+| `--persistence-dir` | `TSD_PERSISTENCE_DIR` | *(platform-specific)* | Directory for WAL data files (`~/.local/share/tellstone/data` on Linux) |
 | `--num-shards` | `TSD_NUM_SHARDS` | `GOMAXPROCS` | Number of shared-nothing shards (one goroutine + one lock-free map per shard) |
 | `--shutdown-timeout` | `TSD_SHUTDOWN_TIMEOUT` | `10s` | Max time to wait for graceful shutdown on SIGINT/SIGTERM |
 

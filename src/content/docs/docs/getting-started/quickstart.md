@@ -52,6 +52,6 @@ A runnable example lives in `cmd/example/client` in the main repo.
 - Read [Data Model](/docs/concepts/data-model/) for how keys, values, and
   TTLs are represented today.
 - Check [Configuration](/docs/operations/configuration/) for tuning memory
-  limits and eviction.
-- Explore [Architecture](/docs/concepts/architecture/) to understand how the protocols
-  and storage engine fit together.
+  limits, eviction, and enabling **WAL persistence** for crash recovery.
+- Explore [Architecture](/docs/concepts/architecture/) to understand how the protocols,
+  storage engine, and persistence layer fit together.

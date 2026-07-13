@@ -13,11 +13,16 @@ configurable right now.
 
 ## Current status
 
-A running Tellstone process is one process holding one in-memory keyspace.
-If it restarts, the keyspace is gone — there's no persistence layer yet
-either. Plan deployments accordingly: Tellstone today is best suited to
-being an in-cluster accelerator or cache in front of a system of record,
-not the system of record itself.
+Tellstone runs as a **single node** — there is no replication or cluster
+membership yet. However, it does include **per-shard WAL persistence** for
+crash recovery (see [Architecture](/docs/concepts/architecture/) for
+details). Enable it with `--enable-persistence`.
+
+Without replication, a running Tellstone process is still a single point
+of failure at the cluster level. Plan deployments accordingly: Tellstone
+today is best suited as an in-cluster accelerator or cache in front of a
+system of record, or paired with application-level sharding for
+horizontal scaling.
 
 ## Planned for Phase 2
 

@@ -9,7 +9,8 @@ Tellstone is an ultra-high-performance, cloud-native **in-memory key/value
 store** written entirely in **Go**. It speaks two protocols over TCP — a
 compact custom binary protocol and a **Redis-compatible (RESP2)** protocol —
 on top of a sharded, low-contention storage engine with optional TTL
-eviction and at-rest encryption.
+eviction, at-rest encryption, and **per-shard WAL persistence** for crash
+recovery.
 
 ```
 +---------------------------------------------+
@@ -41,25 +42,32 @@ in front of them:
   keys in O(1); lazy eviction on read backs it up for efficient key management.
 - **Optional at-rest encryption** — ChaCha20-Poly1305, off by default, for
   secure data storage when needed.
+- **Per-shard WAL persistence** — an append-only write-ahead log per shard
+  for crash recovery. Disabled by default; enable with `--enable-persistence`.
 - **Metrics & tracing** — a built-in Prometheus exporter and optional
   OpenTelemetry tracing for comprehensive observability.
 
 ## What's here today vs. on the roadmap
 
-Tellstone's core engine (Phase 1) is done: the sharded store, both
-protocols, TTL eviction, encryption, and observability. Clustering,
-replication, persistence, and a broader command set are **Phase 2** and
-not yet implemented — see the [clustering page](/docs/operations/clustering/)
-for current status.
+Tellstone's core engine (Phase 1) and persistence (Phase 1.5) are done:
+the sharded store, both protocols, TTL eviction, encryption, observability,
+and per-shard WAL for crash recovery. Clustering, replication, and a
+broader command set are **Phase 2** — see the
+[clustering page](/docs/operations/clustering/) for current status.
 
 **Phase 1 — Core Engine (done):** sharded in-memory engine with TTL
 eviction, binary TCP protocol, Redis-compatible RESP listener
 (`PING`/`GET`/`SET`/`DEL`), at-rest encryption, Prometheus metrics, and
 OpenTelemetry tracing.
 
+**Phase 1.5 — Persistence (done):** per-shard append-only WAL with
+TTL-aware replay, tombstone deletes, crash-safe truncation, and
+zero-allocation writes. Enable with `--enable-persistence`.
+
 **Phase 2 — Distributed (future):** event-driven replication (e.g. NATS
-JetStream), write-through/write-behind persistence, official client SDKs,
-and a broader RESP command set (RESP3, `INCR`, `EXPIRE`, `MULTI`/`EXEC`).
+JetStream), write-through/write-behind persistence to external stores,
+official client SDKs, and a broader RESP command set (RESP3, `INCR`,
+`EXPIRE`, `MULTI`/`EXEC`).
 
 ## Where to go next
 

@@ -102,7 +102,8 @@ pre {
 }
 
 .nav__links a:hover,
-.nav__links a:focus-visible {
+.nav__links a:focus-visible,
+.nav__links .nav__link--active {
   color: var(--color-text);
 }
 

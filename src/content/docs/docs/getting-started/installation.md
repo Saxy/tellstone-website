@@ -54,5 +54,6 @@ For production deployments, consider setting additional environment variables:
 - `TSD_GC_PERCENT=-1` to disable Go's garbage collector for maximum performance
 - `TSD_MEM_LIMIT_BYTES` to set a memory ceiling for the Go runtime
 - `TSD_ENABLE_PROFILING=1` to enable pprof profiling on 127.0.0.1:6060
+- `TSD_ENABLE_PERSISTENCE=true` to enable WAL persistence for crash recovery
 
 Next: run through the [quickstart](/docs/getting-started/quickstart/) to store and read your first key.

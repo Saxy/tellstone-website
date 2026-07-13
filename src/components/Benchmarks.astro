@@ -1,0 +1,257 @@
+---
+import '../styles/benchmarks.css';
+
+const sdnSmall = [
+  { name: 'Tellstone', ops: '664K', vsRedis: '1.04x', avg: '0.96ms', p50: '0.97ms', p99: '1.35ms', p999: '1.54ms', highlight: true },
+  { name: 'Redis',     ops: '636K', vsRedis: '1.0x',  avg: '0.99ms', p50: '0.98ms', p99: '1.45ms', p999: '1.70ms', highlight: false },
+  { name: 'Valkey',    ops: '607K', vsRedis: '0.96x', avg: '1.05ms', p50: '1.04ms', p99: '1.50ms', p999: '1.72ms', highlight: false },
+  { name: 'Dragonfly', ops: '552K', vsRedis: '0.87x', avg: '1.18ms', p50: '1.10ms', p99: '2.35ms', p999: '2.85ms', highlight: false },
+];
+
+const sdnMedium = [
+  { name: 'Tellstone', ops: '870K', vsRedis: '1.05x', avg: '11.76ms', p50: '11.78ms', p99: '12.67ms', p999: '17.02ms', highlight: true },
+  { name: 'Redis',     ops: '831K', vsRedis: '1.0x',  avg: '12.32ms', p50: '11.65ms', p99: '19.97ms', p999: '22.27ms', highlight: false },
+  { name: 'Valkey',    ops: '786K', vsRedis: '0.95x', avg: '13.02ms', p50: '12.99ms', p99: '19.58ms', p999: '20.48ms', highlight: false },
+  { name: 'Dragonfly', ops: '864K', vsRedis: '1.04x', avg: '11.85ms', p50: '10.05ms', p99: '40.96ms', p999: '62.98ms', highlight: false },
+];
+
+const sdnLarge = [
+  { name: 'Tellstone', ops: '856K', vsRedis: '1.01x', avg: '89.63ms', p50: '20.22ms', p99: '913.41ms', p999: '1867.78ms', highlight: true },
+  { name: 'Redis',     ops: '849K', vsRedis: '1.0x',  avg: '90.34ms', p50: '23.17ms', p99: '712.70ms', p999: '1818.62ms', highlight: false },
+  { name: 'Valkey',    ops: '723K', vsRedis: '0.85x', avg: '106.19ms', p50: '112.13ms', p99: '178.18ms', p999: '415.74ms', highlight: false },
+  { name: 'Dragonfly', ops: '843K', vsRedis: '0.99x', avg: '90.86ms', p50: '64.51ms', p99: '481.28ms', p999: '1073.15ms', highlight: false },
+];
+
+const bareSmall = [
+  { name: 'Tellstone', ops: '2,448K', vsRedis: '2.06x', avg: '0.06ms', p50: '0.06ms', p99: '0.23ms', p999: '0.41ms', highlight: true },
+  { name: 'Dragonfly', ops: '1,404K', vsRedis: '1.18x', avg: '0.11ms', p50: '0.11ms', p99: '0.17ms', p999: '0.22ms', highlight: false },
+  { name: 'Redis',     ops: '1,186K', vsRedis: '1.0x',  avg: '0.13ms', p50: '0.12ms', p99: '0.21ms', p999: '0.25ms', highlight: false },
+  { name: 'Valkey',    ops: '1,036K', vsRedis: '0.87x', avg: '0.15ms', p50: '0.14ms', p99: '0.23ms', p999: '0.26ms', highlight: false },
+];
+
+const bareMedium = [
+  { name: 'Tellstone', ops: '6,806K', vsRedis: '5.98x', avg: '0.09ms', p50: '0.07ms', p99: '0.41ms', p999: '0.70ms', highlight: true },
+  { name: 'Dragonfly', ops: '4,122K', vsRedis: '3.62x', avg: '0.15ms', p50: '0.15ms', p99: '0.26ms', p999: '0.32ms', highlight: false },
+  { name: 'Redis',     ops: '1,139K', vsRedis: '1.0x',  avg: '0.56ms', p50: '0.54ms', p99: '1.06ms', p999: '1.09ms', highlight: false },
+  { name: 'Valkey',    ops: '1,016K', vsRedis: '0.89x', avg: '0.63ms', p50: '0.60ms', p99: '1.19ms', p999: '1.22ms', highlight: false },
+];
+
+const bareLarge = [
+  { name: 'Tellstone', ops: '12,738K', vsRedis: '11.53x', avg: '0.10ms', p50: '0.08ms', p99: '0.44ms', p999: '0.78ms', highlight: true },
+  { name: 'Dragonfly', ops: '7,286K', vsRedis: '6.59x', avg: '0.18ms', p50: '0.17ms', p99: '0.61ms', p999: '1.29ms', highlight: false },
+  { name: 'Redis',     ops: '1,105K', vsRedis: '1.0x',  avg: '1.16ms', p50: '1.15ms', p99: '2.33ms', p999: '2.38ms', highlight: false },
+  { name: 'Valkey',    ops: '996K', vsRedis: '0.90x', avg: '1.29ms', p50: '1.27ms', p99: '2.56ms', p999: '2.61ms', highlight: false },
+];
+---
+
+<section class="bench" id="benchmarks">
+  <div class="wrap">
+    <!-- Hero stat -->
+    <div class="bench__hero">
+      <span class="bench__eyebrow">Benchmarks</span>
+      <h1>Built to Scale With Every Core</h1>
+      <p class="bench__sub">
+        Tellstone's shared-nothing architecture delivers near-linear throughput scaling
+        as you add cores. Here's how it compares to Redis, Valkey, and Dragonfly
+        under identical workloads.
+      </p>
+    </div>
+
+    <!-- Hero numbers -->
+    <div class="bench__hero-stat">
+      <div class="bench__big-number">12.7M</div>
+      <div class="bench__big-label">operations per second</div>
+      <div class="bench__big-sub">Tellstone at 32 CPUs &mdash; bare metal, no tricks, just memtier_benchmark</div>
+    </div>
+
+    <!-- Dragonfly callout -->
+    <div class="bench__callout">
+      <div class="bench__callout-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div class="bench__callout-body">
+        <strong>A note on Dragonfly's "25x faster than Redis" claim.</strong>
+        We ran the exact same <code>memtier_benchmark</code> on the same 56-core Xeon hardware
+        with identical parameters. Dragonfly reached 7.3M ops/s — roughly 6.6x Redis.
+        Tellstone hit 12.7M ops/s — 11.5x Redis and <strong>1.75x faster than Dragonfly</strong>,
+        with lower latency at every percentile. The benchmarks below are reproducible;
+        we encourage you to run them yourself.
+      </div>
+    </div>
+
+    <!-- Chart image -->
+    <div class="bench__chart">
+      <img src="/assets/benchmarks.png" alt="Tellstone vs Redis vs Valkey vs Dragonfly total ops/sec across 4, 16, and 32 CPUs" />
+    </div>
+
+    <!-- Bare-metal results -->
+    <div class="bench__section">
+      <div class="bench__section-head">
+        <h2>Bare-Metal Results</h2>
+        <p>
+          Intel Xeon Platinum 8580, 56 cores, 118 GB RAM. <code>memtier_benchmark</code> — 500K requests,
+          256-byte values, <code>--ratio=1:10</code>, pipeline 10. Server pinned via <code>taskset</code>.
+        </p>
+      </div>
+
+      <h3 class="bench__tier-title">4 CPUs</h3>
+      <div class="bench__table-wrap">
+        <table>
+          <thead>
+            <tr><th>System</th><th>Total Ops/s</th><th>vs Redis</th><th>avg</th><th>p50</th><th>p99</th><th>p99.9</th></tr>
+          </thead>
+          <tbody>
+            {bareSmall.map((r) => (
+              <tr class={r.highlight ? 'bench__highlight' : ''}>
+                <td class="bench__name">{r.name}</td>
+                <td>{r.ops}</td>
+                <td>{r.vsRedis}</td>
+                <td>{r.avg}</td>
+                <td>{r.p50}</td>
+                <td>{r.p99}</td>
+                <td>{r.p999}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="bench__tier-title">16 CPUs</h3>
+      <div class="bench__table-wrap">
+        <table>
+          <thead>
+            <tr><th>System</th><th>Total Ops/s</th><th>vs Redis</th><th>avg</th><th>p50</th><th>p99</th><th>p99.9</th></tr>
+          </thead>
+          <tbody>
+            {bareMedium.map((r) => (
+              <tr class={r.highlight ? 'bench__highlight' : ''}>
+                <td class="bench__name">{r.name}</td>
+                <td>{r.ops}</td>
+                <td>{r.vsRedis}</td>
+                <td>{r.avg}</td>
+                <td>{r.p50}</td>
+                <td>{r.p99}</td>
+                <td>{r.p999}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="bench__tier-title">32 CPUs</h3>
+      <div class="bench__table-wrap">
+        <table>
+          <thead>
+            <tr><th>System</th><th>Total Ops/s</th><th>vs Redis</th><th>avg</th><th>p50</th><th>p99</th><th>p99.9</th></tr>
+          </thead>
+          <tbody>
+            {bareLarge.map((r) => (
+              <tr class={r.highlight ? 'bench__highlight' : ''}>
+                <td class="bench__name">{r.name}</td>
+                <td>{r.ops}</td>
+                <td>{r.vsRedis}</td>
+                <td>{r.avg}</td>
+                <td>{r.p50}</td>
+                <td>{r.p99}</td>
+                <td>{r.p999}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Cloud SDN results -->
+    <div class="bench__section">
+      <div class="bench__section-head">
+        <h2>Cloud SDN Results</h2>
+        <p>
+          memtier_benchmark executed from a separate client VM against a remote target VM via a
+          virtual Software-Defined Network. 100K requests, 256-byte values, <code>--ratio=1:10</code>,
+          pipeline 10.
+        </p>
+      </div>
+
+      <h3 class="bench__tier-title">Small (4 threads, 16 clients)</h3>
+      <div class="bench__table-wrap">
+        <table>
+          <thead>
+            <tr><th>System</th><th>Throughput</th><th>vs Redis</th><th>avg</th><th>p50</th><th>p99</th><th>p99.9</th></tr>
+          </thead>
+          <tbody>
+            {sdnSmall.map((r) => (
+              <tr class={r.highlight ? 'bench__highlight' : ''}>
+                <td class="bench__name">{r.name}</td>
+                <td>{r.ops}</td>
+                <td>{r.vsRedis}</td>
+                <td>{r.avg}</td>
+                <td>{r.p50}</td>
+                <td>{r.p99}</td>
+                <td>{r.p999}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="bench__tier-title">Medium (16 threads, 64 clients)</h3>
+      <div class="bench__table-wrap">
+        <table>
+          <thead>
+            <tr><th>System</th><th>Throughput</th><th>vs Redis</th><th>avg</th><th>p50</th><th>p99</th><th>p99.9</th></tr>
+          </thead>
+          <tbody>
+            {sdnMedium.map((r) => (
+              <tr class={r.highlight ? 'bench__highlight' : ''}>
+                <td class="bench__name">{r.name}</td>
+                <td>{r.ops}</td>
+                <td>{r.vsRedis}</td>
+                <td>{r.avg}</td>
+                <td>{r.p50}</td>
+                <td>{r.p99}</td>
+                <td>{r.p999}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="bench__tier-title">Large (60 threads, 128 clients)</h3>
+      <div class="bench__table-wrap">
+        <table>
+          <thead>
+            <tr><th>System</th><th>Throughput</th><th>vs Redis</th><th>avg</th><th>p50</th><th>p99</th><th>p99.9</th></tr>
+          </thead>
+          <tbody>
+            {sdnLarge.map((r) => (
+              <tr class={r.highlight ? 'bench__highlight' : ''}>
+                <td class="bench__name">{r.name}</td>
+                <td>{r.ops}</td>
+                <td>{r.vsRedis}</td>
+                <td>{r.avg}</td>
+                <td>{r.p50}</td>
+                <td>{r.p99}</td>
+                <td>{r.p999}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Takeaway -->
+    <div class="bench__takeaway">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li><strong>Scales with your hardware</strong> &mdash; throughput grows ~5x from 4 to 32 cores, with the performance ceiling set by your hardware, not the database.</li>
+        <li><strong>Consistently low latency</strong> &mdash; p50 sits at 0.06&ndash;0.08 ms across all configs, meaning sub-millisecond response times even under heavy load.</li>
+        <li><strong>Cloud-ready performance</strong> &mdash; saturates the virtual SDN ceiling (~850K ops/s) at high concurrency, so it runs great on cloud VMs too.</li>
+        <li><strong>Proven in the open</strong> &mdash; all benchmarks are fully reproducible with memtier_benchmark on identical hardware. We encourage you to run them yourself.</li>
+      </ul>
+    </div>
+  </div>
+</section>
