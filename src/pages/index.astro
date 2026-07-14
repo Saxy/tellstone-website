@@ -33,19 +33,35 @@ const commandTabs = [
 
 const installTabs = [
   {
-    label: 'Build',
+    label: 'APT (Debian/Ubuntu)',
+    code:
+      '<span class="tok-com"># Add the Tellstone repository</span>\n' +
+      '<span class="tok-cmd">curl</span> -fsSL https://saxy.github.io/tellstone-apt/key.gpg \\\n' +
+      '  | <span class="tok-cmd">sudo</span> gpg --dearmor -o /usr/share/keyrings/tellstone.gpg\n\n' +
+      '<span class="tok-cmd">echo</span> <span class="tok-str">"deb [signed-by=/usr/share/keyrings/tellstone.gpg] https://saxy.github.io/tellstone-apt stable main"</span> \\\n' +
+      '  | <span class="tok-cmd">sudo</span> tee /etc/apt/sources.list.d/tellstone.list\n\n' +
+      '<span class="tok-cmd">sudo</span> apt update && <span class="tok-cmd">sudo</span> apt install tellstone',
+  },
+  {
+    label: 'Homebrew (macOS/Linux)',
+    code:
+      '<span class="tok-cmd">brew</span> tap Saxy/tellstone-tap\n' +
+      '<span class="tok-cmd">brew</span> install --cask Saxy/tellstone-tap/tellstone',
+  },
+  {
+    label: 'Binary downloads',
+    code:
+      '<span class="tok-com"># Download from GitHub Releases</span>\n' +
+      '<span class="tok-cmd">curl</span> -fsSL https://github.com/Saxy/Tellstone/releases/latest/download/tellstone_1.0.0_linux_amd64.tar.gz \\\n' +
+      '  | <span class="tok-cmd">tar</span> xz\n' +
+      '<span class="tok-cmd">sudo</span> mv tellstone /usr/local/bin/',
+  },
+  {
+    label: 'Build from source',
     code:
       '<span class="tok-cmd">git</span> clone https://github.com/Saxy/Tellstone\n' +
       '<span class="tok-cmd">cd</span> Tellstone\n' +
       '<span class="tok-cmd">task</span> build   <span class="tok-com"># -> ./bin/tellstone</span>',
-  },
-  {
-    label: 'Run (binary only)',
-    code: '<span class="tok-cmd">task</span> run   <span class="tok-com"># 127.0.0.1:9988</span>',
-  },
-  {
-    label: 'Run (+ RESP)',
-    code: '<span class="tok-cmd">task</span> run:resp   <span class="tok-com"># :9988 and :6379</span>',
   },
 ];
 ---
@@ -96,7 +112,7 @@ const installTabs = [
       <div class="wrap">
         <div class="section__head">
           <h2>Easy Setup & Deployment</h2>
-          <p>Build Tellstone from source with Go and Task, or run it directly with configurable flags and environment variables.</p>
+          <p>Install via APT, Homebrew, or pre-built binaries. Build from source if you prefer.</p>
         </div>
         <CodeTabs id="install" tabs={installTabs} />
       </div>

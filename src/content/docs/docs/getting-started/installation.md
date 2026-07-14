@@ -1,19 +1,59 @@
 ---
 title: Installation
-description: Build Tellstone from source with Go and Task.
+description: Install Tellstone via APT, Homebrew, pre-built binaries, or build from source.
 sidebar:
   order: 2
 ---
 
-Tellstone doesn't publish packaged binaries yet — build it from source.
+## APT (Debian/Ubuntu)
 
-## Prerequisites
+```sh
+# Import the signing key
+curl -fsSL https://saxy.github.io/tellstone-apt/key.gpg \
+  | sudo gpg --dearmor -o /usr/share/keyrings/tellstone.gpg
+
+# Add the repository
+echo "deb [signed-by=/usr/share/keyrings/tellstone.gpg] https://saxy.github.io/tellstone-apt stable main" \
+  | sudo tee /etc/apt/sources.list.d/tellstone.list
+
+# Install
+sudo apt update && sudo apt install tellstone
+```
+
+## Homebrew (macOS/Linux)
+
+```sh
+brew tap Saxy/tellstone-tap
+brew install --cask Saxy/tellstone-tap/tellstone
+```
+
+## Binary downloads
+
+Pre-built binaries for Linux, macOS, and Windows (amd64/arm64) are available on the
+[GitHub Releases](https://github.com/Saxy/Tellstone/releases) page.
+
+```sh
+# Example: Linux amd64
+curl -fsSL https://github.com/Saxy/Tellstone/releases/latest/download/tellstone_1.0.0_linux_amd64.tar.gz \
+  | tar xz
+sudo mv tellstone /usr/local/bin/
+```
+
+Verify the installation:
+
+```sh
+tellstone --version
+```
+
+## Build from source
+
+### Prerequisites
 
 - **Go 1.26+**
 - Optional: [`task`](https://taskfile.dev) (go-task) for the shortcuts below
 - Optional, for RESP benchmarking: `redis-cli`, `memtier_benchmark`, or `redis-tools`
 
-## Build
+### Build
 
 ```sh
 git clone https://github.com/Saxy/Tellstone
@@ -27,7 +67,7 @@ Without `task`, build directly with Go:
 go build -o bin/tellstone ./cmd/tellstone
 ```
 
-## Run
+### Run
 
 ```sh
 task run            # binary protocol on 127.0.0.1:9988
