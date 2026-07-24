@@ -1,0 +1,742 @@
+---
+import Landing from '../layouts/Landing.astro';
+
+const phases = [
+  {
+    number: '1',
+    title: 'Core Engine & Persistence',
+    status: 'done',
+    statusLabel: 'Done',
+    description: 'High-performance in-memory key/value store with shared-nothing architecture, zero-copy binary protocol, Redis-compatible RESP2, and per-shard WAL persistence.',
+    sections: [
+      {
+        title: 'Sharded In-Memory Engine',
+        docLink: '/docs/concepts/architecture/',
+        items: [
+          'N shards (default GOMAXPROCS) with per-shard RWMutex',
+          'FNV-1a key hash routing — no cross-shard coordination',
+          'Configurable via --num-shards',
+        ],
+      },
+      {
+        title: 'Dual Protocol Support',
+        docLink: '/docs/commands/overview/',
+        items: [
+          'Zero-copy binary protocol (GET/SET/DEL)',
+          'Redis-compatible RESP2 (PING/GET/SET/DEL)',
+          'Same storage engine behind both protocols',
+        ],
+      },
+      {
+        title: 'TTL Eviction',
+        docLink: '/docs/concepts/data-model/',
+        items: [
+          'Active timing wheel — O(1) per-tick eviction',
+          'Lazy eviction on read for expired keys',
+          'Configurable --evict-interval and --evict-slots',
+        ],
+      },
+      {
+        title: 'At-Rest Encryption',
+        docLink: '/docs/operations/configuration/',
+        items: [
+          'ChaCha20-Poly1305 encryption, off by default',
+          'Optional --encryption-key flag',
+        ],
+      },
+      {
+        title: 'Observability',
+        docLink: '/docs/operations/configuration/',
+        items: [
+          'Built-in Prometheus metrics exporter',
+          'OpenTelemetry (OTLP/gRPC) tracing',
+        ],
+      },
+      {
+        title: 'Per-Shard WAL Persistence',
+        docLink: '/docs/concepts/architecture/',
+        items: [
+          'Append-only write-ahead log per shard',
+          'TTL-aware replay on startup',
+          'Tombstone deletes and crash-safe truncation',
+          'Zero-allocation writes — enabled with --enable-persistence',
+        ],
+      },
+    ],
+  },
+  {
+    number: '2',
+    title: 'Security & Transport',
+    status: 'current',
+    statusLabel: 'In Progress',
+    description: 'Production readiness hinges on transport encryption and authentication.',
+    sections: [
+      {
+        title: '2a — TLS / mTLS Transport',
+        items: [
+          'TLS 1.3 support for binary and RESP2 listeners',
+          'Mutual TLS for service-to-service auth in Kubernetes',
+          'Automatic certificate rotation via filesystem watcher or K8s Secret projection',
+          'STARTTLS upgrade path for RESP connections',
+        ],
+      },
+      {
+        title: '2b — Authentication & Authorization',
+        items: [
+          'AUTH command for RESP protocol (password-based)',
+          'AUTH handshake for binary protocol (challenge-response)',
+          'API key system with per-key ACLs',
+          'OIDC / OAuth2 integration for SSO',
+          'ACL SETUSER / DELUSER / LIST for runtime access rules',
+          'Audit logging',
+        ],
+      },
+      {
+        title: '2c — Encryption Key Management',
+        items: [
+          'Key rotation command — re-encrypt all values in-place',
+          'Key derivation from environment / Vault / KMS',
+          'Envelope encryption — master key decrypts per-shard DEKs',
+        ],
+      },
+    ],
+  },
+  {
+    number: '3',
+    title: 'Data Durability & Recovery',
+    status: 'planned',
+    statusLabel: 'Planned',
+    description: 'WAL compaction, portable snapshots, and off-site backup.',
+    sections: [
+      {
+        title: '3a — WAL Compaction & Optimization',
+        items: [
+          'Background WAL compaction — merge and deduplicate records',
+          'WAL file rotation — split by size or time',
+          'Incremental WAL replay for faster startup',
+        ],
+      },
+      {
+        title: '3b — Full-Database Snapshots',
+        items: [
+          'BGSAVE command — fork-free snapshot to compact binary format',
+          'Snapshot integrity via xxHash / SHA-256 checksums',
+          'LASTSAVE command',
+          'Point-in-time recovery — snapshot + WAL replay',
+          'Snapshot streaming — SAVE TO STDOUT',
+        ],
+      },
+      {
+        title: '3c — Backup Integration',
+        items: [
+          'Pluggable backup backends: local FS, S3, GCS, Azure Blob',
+          'Encrypted backups with ChaCha20-Poly1305',
+          'Backup rotation policies',
+          'RESTORE command to rehydrate an empty instance',
+        ],
+      },
+      {
+        title: '3d — Better Persistence Backend',
+        items: [
+          'Optional write-through mode via SQLite / BoltDB',
+          'LSM-tree-inspired tiered storage',
+          'MIGRATE command — move keys between shards',
+        ],
+      },
+    ],
+  },
+  {
+    number: '4',
+    title: 'Intelligence Layer',
+    status: 'planned',
+    statusLabel: 'Planned',
+    description: 'Vector search designed into the shared-nothing architecture from the start.',
+    sections: [
+      {
+        title: '4a — Vector Index Foundation',
+        items: [
+          'New vector shard type — fixed-dimension float32 embeddings',
+          'VADD / VGET / VDEL / VCOUNT commands',
+        ],
+      },
+      {
+        title: '4b — Approximate Nearest Neighbor Search',
+        items: [
+          'VSEARCH with KNN query support',
+          'HNSW index — high-recall, low-latency',
+          'IVF with product quantization — memory-efficient for large datasets',
+          'Configurable distance metrics: cosine, L2, inner product',
+        ],
+      },
+      {
+        title: '4c — Vector Metadata Filtering',
+        items: [
+          'SQL-like WHERE clause on metadata',
+          'Filtered HNSW — pre-filter at graph traversal time',
+          'Composite indexes — similarity + metadata filter in one query',
+        ],
+      },
+      {
+        title: '4d — AI Integration Points',
+        items: [
+          'Bulk ingestion pipeline — VIMPORT FROM CSV/JSON',
+          'Streaming ingestion from Kafka / NATS / gRPC',
+          'Integration hooks for LLM pipelines',
+          'Dimension auto-detection from first inserted vector',
+        ],
+      },
+    ],
+  },
+  {
+    number: '5',
+    title: 'Ecosystem & Operations',
+    status: 'planned',
+    statusLabel: 'Planned',
+    description: 'Client SDKs, protocol extensions, cluster mode, and write-through adapters.',
+    sections: [
+      {
+        title: '5a — Client SDKs',
+        items: [
+          'Go client — official, high-performance',
+          'Python client with async support',
+          'Node.js client — TypeScript-first',
+          'Connection pooling, auto-reconnect, pub/sub in all SDKs',
+        ],
+      },
+      {
+        title: '5b — Protocol Extensions',
+        items: [
+          'RESP3 support',
+          'Memcached protocol support (binary and text)',
+          'gRPC service definition for structured RPC',
+        ],
+      },
+      {
+        title: '5c — Cluster Mode',
+        items: [
+          'Consistent hashing across nodes',
+          'Peer-to-peer replication (Raft or CRDTs)',
+          'CLUSTER INFO / CLUSTER NODES for topology discovery',
+          'Automatic failover and rebalancing',
+        ],
+      },
+      {
+        title: '5d — Write-Through to External DBs',
+        items: [
+          'PostgreSQL, MariaDB, MSSQL write-through adapters',
+          'Configurable write policies: sync, async, batched',
+          'Read-through caching',
+        ],
+      },
+    ],
+  },
+  {
+    number: '6',
+    title: 'Observability & Developer Experience',
+    status: 'planned',
+    statusLabel: 'Planned',
+    description: 'Built-in dashboard, query layer, and operational tooling.',
+    sections: [
+      {
+        title: '6a — Built-in Dashboard',
+        items: [
+          'Lightweight embedded web UI (single binary)',
+          'Real-time shard stats: keys, memory, hit rate, ops/sec',
+          'TTL histogram, eviction rate, WAL lag visualization',
+          'Connection inspector',
+        ],
+      },
+      {
+        title: '6b — Query Layer',
+        items: [
+          'Wire SQL parser into the server',
+          'Full SQL-like queries with WHERE, LIKE, TTL filters',
+          'Slow query logging with configurable threshold',
+          'EXPLAIN query plan output',
+        ],
+      },
+      {
+        title: '6c — Operational Tooling',
+        items: [
+          'INFO command — comprehensive server statistics',
+          'CONFIG SET / CONFIG GET — runtime config changes',
+          'SLOWLOG — track and query slow operations',
+          'MEMORY DOCTOR — usage analysis and suggestions',
+          'Graceful shard migration for rolling upgrades',
+        ],
+      },
+    ],
+  },
+];
+---
+<Landing
+  title="Roadmap — Tellstone"
+  description="Where Tellstone is going, and how we plan to get there. From security and transport to vector search and cluster mode."
+>
+  <header class="nav">
+    <div class="wrap nav__row">
+      <a class="nav__brand" href="/">
+        <img src="/logo.svg" alt="Tellstone logo" />
+        Tellstone
+      </a>
+      <nav class="nav__links">
+        <a href="/docs/getting-started/introduction/">Docs</a>
+        <a href="/#features">Features</a>
+        <a href="/benchmarks">Benchmarks</a>
+        <a href="/roadmap" class="nav__link--active">Roadmap</a>
+        <a href="https://github.com/Saxy/Tellstone">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="rm-hero">
+      <div class="wrap">
+        <div class="rm-hero__inner">
+          <p class="rm-hero__eyebrow">Development Roadmap</p>
+          <h1 class="rm-hero__title">Where We're Going</h1>
+          <p class="rm-hero__sub">A contest of focus. Keep yours made of steel.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="rm-status">
+      <div class="wrap">
+        <div class="rm-status__grid">
+          {phases.map((p) => (
+            <a href={`#phase-${p.number}`} class={`rm-status__card rm-status__card--${p.status}`}>
+              <div class="rm-status__num">{p.number}</div>
+              <div class="rm-status__info">
+                <span class="rm-status__name">{p.title}</span>
+                <span class={`rm-badge rm-badge--${p.status}`}>{p.statusLabel}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="rm-timeline">
+      <div class="wrap">
+        <div class="rm-timeline__line" aria-hidden="true"></div>
+        {phases.filter(p => p.sections.length > 0).map((p) => (
+          <div class={`rm-phase rm-phase--${p.status}`} id={`phase-${p.number}`}>
+            <div class="rm-phase__marker" aria-hidden="true">
+              <div class={`rm-phase__dot rm-phase__dot--${p.status}`}></div>
+            </div>
+            <div class="rm-phase__content">
+              <div class="rm-phase__header">
+                <h2 class="rm-phase__title">Phase {p.number} — {p.title}</h2>
+                <span class={`rm-badge rm-badge--${p.status}`}>{p.statusLabel}</span>
+              </div>
+              <p class="rm-phase__desc">{p.description}</p>
+              <div class="rm-sections">
+                {p.sections.map((s) => (
+                  <details class="rm-section" {...(p.status !== 'done' ? { open: true } : {})}>
+                    <summary class="rm-section__title">
+                      {s.title}
+                      {s.docLink && <a href={s.docLink} class="rm-doc-link" onclick="event.stopPropagation()" target="_blank">Docs →</a>}
+                    </summary>
+                    <ul class="rm-section__list">
+                      {s.items.map((item) => (
+                        <li class="rm-section__item">{item}</li>
+                      ))}
+                    </ul>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="rm-principles">
+      <div class="wrap">
+        <h2>Design Principles</h2>
+        <p class="rm-principles__sub">These guide every decision on this roadmap:</p>
+        <div class="rm-principles__grid">
+          <div class="rm-principle">
+            <h3>Zero-allocation hot path</h3>
+            <p>Performance is the core value prop; never regress the hot path.</p>
+          </div>
+          <div class="rm-principle">
+            <h3>Shared-nothing first</h3>
+            <p>Avoid shared state; coordinate only when absolutely necessary.</p>
+          </div>
+          <div class="rm-principle">
+            <h3>Optional everything</h3>
+            <p>Every feature is opt-in, disabled by default, zero cost when off.</p>
+          </div>
+          <div class="rm-principle">
+            <h3>Single binary</h3>
+            <p>No external dependencies; embed what you can, link what you must.</p>
+          </div>
+          <div class="rm-principle">
+            <h3>Security by default</h3>
+            <p>TLS and auth should be trivially deployable, not an afterthought.</p>
+          </div>
+          <div class="rm-principle">
+            <h3>Cloud-native</h3>
+            <p>Kubernetes-native config, graceful shutdown, Prometheus metrics, OTLP tracing.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__row">
+      <span>&copy; {new Date().getFullYear()} The Tellstone Project. Apache-2.0 License.</span>
+      <div class="footer__links">
+        <a href="/docs/getting-started/introduction/">Documentation</a>
+      </div>
+      <div class="footer__socials">
+        <a href="https://github.com/Saxy/Tellstone" target="_blank" aria-label="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+        </a>
+        <a href="https://www.reddit.com/r/tellstone/" target="_blank" aria-label="Reddit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+        </a>
+        <a href="https://discord.gg/kEf78DUFX" target="_blank" aria-label="Discord">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+</Landing>
+
+<style>
+  /* ── Hero ── */
+  .rm-hero {
+    padding-block: 6rem 4rem;
+    text-align: center;
+  }
+  .rm-hero__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+  .rm-hero__title {
+    font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+    line-height: 1.08;
+    margin-bottom: 0.6rem;
+  }
+  .rm-hero__sub {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Status Grid ── */
+  .rm-status {
+    padding-block: 0 4rem;
+    position: relative;
+  }
+  .rm-status__grid {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.75rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent) transparent;
+    border-bottom: 2px solid var(--color-accent);
+  }
+  .rm-status__grid::-webkit-scrollbar {
+    height: 4px;
+  }
+  .rm-status__grid::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border-radius: 4px;
+  }
+  .rm-status__grid::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .rm-status__card {
+    flex: 0 0 155px;
+    scroll-snap-align: start;
+    background: var(--color-bg-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .rm-status__card:hover {
+    border-color: var(--color-accent);
+  }
+  .rm-status__card--current {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 1px var(--color-accent);
+  }
+  .rm-status__num {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1;
+  }
+  .rm-status__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .rm-status__name {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  /* ── Badges ── */
+  .rm-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .rm-badge--done {
+    background: rgba(34, 197, 94, 0.12);
+    color: #22c55e;
+  }
+  .rm-badge--current {
+    background: rgba(0, 229, 255, 0.12);
+    color: var(--color-accent);
+  }
+  .rm-badge--planned {
+    background: rgba(148, 163, 184, 0.12);
+    color: var(--slate-400);
+  }
+
+  /* ── Timeline ── */
+  .rm-timeline {
+    padding-block: 2rem 6rem;
+    position: relative;
+  }
+  .rm-timeline__line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-border);
+    transform: translateX(-50%);
+  }
+  .rm-phase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    position: relative;
+    min-width: 0;
+    scroll-margin-top: 5rem;
+  }
+  .rm-phase__marker {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+  .rm-phase__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 3px solid var(--color-bg);
+    margin-top: 4px;
+  }
+  .rm-phase__dot--done {
+    background: #22c55e;
+  }
+  .rm-phase__dot--current {
+    background: var(--color-accent);
+    box-shadow: 0 0 12px var(--color-accent);
+  }
+  .rm-phase__dot--planned {
+    background: var(--slate-600);
+  }
+  .rm-phase__content {
+    grid-column: 2;
+    background: var(--color-bg-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    overflow: hidden;
+    word-break: break-word;
+    min-width: 0;
+  }
+  .rm-phase:nth-child(even) .rm-phase__content {
+    grid-column: 1;
+    grid-row: 1;
+    overflow: hidden;
+    word-break: break-word;
+    min-width: 0;
+  }
+  .rm-phase__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .rm-phase__title {
+    font-size: 1.35rem;
+    margin: 0;
+  }
+  .rm-phase__desc {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── Sections (collapsible) ── */
+  .rm-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .rm-section {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .rm-section[open] {
+    border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-border));
+  }
+  .rm-section__title {
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text);
+    transition: background 0.15s;
+  }
+  .rm-section__title::-webkit-details-marker {
+    display: none;
+  }
+  .rm-section__title::before {
+    content: '▸';
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    transition: transform 0.2s;
+  }
+  .rm-section[open] > .rm-section__title::before {
+    transform: rotate(90deg);
+  }
+  .rm-section__title:hover {
+    background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+  }
+  .rm-doc-link {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--color-accent);
+    opacity: 0.7;
+    transition: opacity 0.15s;
+  }
+  .rm-doc-link:hover {
+    opacity: 1;
+  }
+  .rm-section__list {
+    list-style: none;
+    margin: 0;
+    padding: 0 1rem 0.75rem 1.75rem;
+  }
+  .rm-section__item {
+    position: relative;
+    padding: 0.3rem 0;
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .rm-section__item::before {
+    content: '—';
+    position: absolute;
+    left: -1rem;
+    color: var(--color-border);
+  }
+
+  /* ── Principles ── */
+  .rm-principles {
+    padding-block: 4rem 6rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .rm-principles h2 {
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+    margin-bottom: 0.4rem;
+  }
+  .rm-principles__sub {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  .rm-principles__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .rm-principle {
+    background: var(--color-bg-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.4rem;
+  }
+  .rm-principle h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.35rem;
+    color: var(--color-accent);
+  }
+  .rm-principle p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .rm-status__card {
+      flex: 0 0 140px;
+    }
+    .rm-timeline__line {
+      left: 1.2rem;
+    }
+    .rm-phase {
+      grid-template-columns: 1fr;
+      padding-left: 2.8rem;
+      gap: 0;
+    }
+    .rm-phase__marker {
+      left: 1.2rem;
+      transform: translateX(-50%);
+    }
+    .rm-phase__content,
+    .rm-phase:nth-child(even) .rm-phase__content {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .rm-principles__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
